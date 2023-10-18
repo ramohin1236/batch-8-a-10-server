@@ -31,6 +31,15 @@ async function run() {
 
     const productCollection =client.db("automotive").collection("servicesProduct");
 
+    // get product in browser
+
+   app.get('/product',async(req,res)=>{
+    const cursor = productCollection.find();
+    const result = await cursor.toArray()
+    res.send(result)
+   })
+
+
     // post product in database 
    app.post('/product',async(req,res)=>{
       const product = req.body;
