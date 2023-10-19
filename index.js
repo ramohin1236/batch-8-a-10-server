@@ -1,5 +1,5 @@
 const express =require('express')
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const cors = require('cors');
 const app= express();
@@ -30,6 +30,7 @@ async function run() {
     await client.connect();
 
     const productCollection =client.db("automotive").collection("servicesProduct");
+    const brandCollection =client.db("automotive").collection("brand");
 
     // get product in browser
 
@@ -43,9 +44,33 @@ async function run() {
     // post product in database 
    app.post('/product',async(req,res)=>{
       const product = req.body;
-      console.log(product)
+    //   console.log(product)
       const result= await productCollection.insertOne(product);
       res.send(result)
+   })
+
+//    -----------------------------
+
+   // get product in browser
+
+   app.get('/brand',async(req,res)=>{
+    const cursor = brandCollection.find();
+    const result = await cursor.toArray()
+    res.send(result)
+   })
+    // post brand car in database 
+   app.post('/brand',async(req,res)=>{
+      const product = req.body;
+      console.log(product)
+      const result= await brandCollection.insertOne(product);
+      res.send(result)
+   })
+    // get one bmw car in database 
+   app.get("/layout/BMW/:id",async(req,res)=>{
+      const id = req.params.id;
+      const query = {_id : new ObjectId(id)}
+      const user = await brandCollection.findOne(query)
+      res.send(user)
    })
 
 
