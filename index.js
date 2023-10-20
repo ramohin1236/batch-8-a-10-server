@@ -31,6 +31,46 @@ async function run() {
 
     const productCollection =client.db("automotive").collection("servicesProduct");
     const brandCollection =client.db("automotive").collection("brand");
+    const userCollection =client.db("automotive").collection("user");
+    const buycarCollection =client.db("automotive").collection("buycar");
+
+
+// useer Post 
+
+  app.post('/user',async(req,res)=>{
+    const user = req.body;
+    const result= await userCollection.insertOne(user);
+    res.send(result)
+ })
+// buy car 
+
+  app.post('/buycar',async(req,res)=>{
+    const product = req.body;
+    console.log(product)
+    const result= await buycarCollection.insertOne(product);
+    res.send(result)
+ })
+  
+
+  app.get('/buycar',async(req,res)=>{
+    const cursor = buycarCollection.find();
+    const user = await cursor.toArray()
+    res.send(user)
+   })
+
+  app.delete('/buycar/:id',async(req,res)=>{
+    const id =req.params.id
+    const query = {_id: new ObjectId(id)}
+    const result= await buycarCollection.deleteOne(query)
+    res.send(result)
+   })
+
+
+
+
+
+
+
 
     // get product in browser
 
@@ -44,7 +84,6 @@ async function run() {
     // post product in database 
    app.post('/product',async(req,res)=>{
       const product = req.body;
-    //   console.log(product)
       const result= await productCollection.insertOne(product);
       res.send(result)
    })
