@@ -80,7 +80,13 @@ async function run() {
       res.send(user)
    })
 
-
+// get one toyota car in database 
+app.get("/layout/tesla/:id",async(req,res)=>{
+    const id = req.params.id;
+    const query = {_id : new ObjectId(id)}
+    const user = await brandCollection.findOne(query)
+    res.send(user)
+ })
 
 
 
